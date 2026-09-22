@@ -1,6 +1,6 @@
 package com.example.gestor.controller;
 
-import com.example.gestor.model.Tarea;
+import com.example.gestor.model.Proyecto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,29 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tareas")
-public class TareasController {
+@RequestMapping("/proyectos")
+public class ProyectoController {
 
-    private final List<Tarea> tareas = new ArrayList<>();
+    private final List<Proyecto> proyectos = new ArrayList<>();
 
     @GetMapping
-    public List<Tarea> lista() {
-        return tareas;
+    public List<Proyecto> lista() {
+        return proyectos;
     }
 
     @GetMapping("/{id}")
-    public Tarea detalle(@PathVariable(name = "id") int id) {
-        for (Tarea tarea : tareas) {
-            if (tarea.getId() == id) {
-                return tarea;
+    public Proyecto detalle(@PathVariable(name = "id") int id) {
+        for (Proyecto proyecto : proyectos) {
+            if (proyecto.getId() == id) {
+                return proyecto;
             }
         }
         return null;
     }
 
     @PostMapping
-    public Tarea crear(@RequestBody Tarea tarea) {
-        tareas.add(tarea);
-        return tarea;
+    public Proyecto crear(@RequestBody Proyecto proyecto) {
+        proyectos.add(proyecto);
+        return proyecto;
     }
 }

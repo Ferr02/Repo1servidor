@@ -1,4 +1,4 @@
-package com.example.gestor.controller;
+/*package com.example.gestor.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,4 +17,4 @@ public class RetoController {
 
         return "Tarea " + id + " en formato " + formato;
     }
-}
+}*/
