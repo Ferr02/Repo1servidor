@@ -7,6 +7,7 @@ public class Tarea {
     private String titulo;
     private String prioridad;
     private boolean completada;
+    
 
     @JsonCreator
     public Tarea() {
