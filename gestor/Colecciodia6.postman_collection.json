@@ -1,0 +1,293 @@
+{
+  "info": {
+    "_postman_id": "796ec0b5-2bef-4073-a52e-a571b078e3d5",
+    "name": "Colecciodia6",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58406549",
+    "_collection_link": "https://go.postman.co/collection/58406549-796ec0b5-2bef-4073-a52e-a571b078e3d5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Consultar_totes_tasques",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Comprova que el servidor respon amb status 200 OK\r\npm.test(\"Status code es 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\n// Comprova que el resultat siga un array [...]\r\npm.test(\"Devuelve un array\", function () {\r\n    pm.expect(pm.response.json()).to.be.an(\"array\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear_tarea_A",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.unset(\"tareaId\");\r\n\r\nif (pm.response.code === 201) {\r\n    pm.collectionVariables.set(\r\n        \"tareaId\",\r\n        pm.response.json().id\r\n    );\r\n}\r\n\r\npm.test(\"Creación con 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Id asignado y contenido esperado\", function () {\r\n    const cuerpo = pm.response.json();\r\n\r\n    pm.expect(cuerpo.id).to.be.above(0);\r\n    pm.expect(cuerpo.titulo).to.equal(\"Prueba A de la colección\");\r\n});\r\n\r\npm.test(\"Incluye Location\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Location\")\r\n    ).to.be.a(\"string\").and.not.empty;\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"titulo\": \"Prueba A de la colección\",\r\n  \"prioridad\": \"alta\",\r\n  \"completada\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tareas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear_tarea_B",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.unset(\"tareaBId\");\r\n\r\nif (pm.response.code === 201) {\r\n    pm.collectionVariables.set(\r\n        \"tareaBId\",\r\n        pm.response.json().id\r\n    );\r\n}\r\n\r\npm.test(\"Creación con 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Id asignado y contenido esperado\", function () {\r\n    const cuerpo = pm.response.json();\r\n\r\n    pm.expect(cuerpo.id).to.be.above(0);\r\n    pm.expect(cuerpo.titulo).to.equal(\"Prueba B de la colección\");\r\n});\r\n\r\npm.test(\"Incluye Location\", function () {\r\n    pm.expect(\r\n        pm.response.headers.get(\"Location\")\r\n    ).to.be.a(\"string\").and.not.empty;\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"titulo\": \"Prueba B de la colección\",\r\n  \"prioridad\": \"alta\",\r\n  \"completada\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tareas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Consultar_A",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Devuelve exactamente A\", function () {\r\n    const cuerpo = pm.response.json();\r\n\r\n    pm.expect(cuerpo.id).to.equal(\r\n        Number(pm.collectionVariables.get(\"tareaId\"))\r\n    );\r\n\r\n    pm.expect(cuerpo.titulo).to.equal(\r\n        \"Prueba A de la colección\"\r\n    );\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/{{tareaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas",
+            "{{tareaId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Consultar_B",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Devuelve exactamente B\", function () {\r\n    const cuerpo = pm.response.json();\r\n\r\n    pm.expect(cuerpo.id).to.equal(\r\n        Number(pm.collectionVariables.get(\"tareaBId\"))\r\n    );\r\n\r\n    pm.expect(cuerpo.titulo).to.equal(\r\n        \"Prueba B de la colección\"\r\n    );\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/{{tareaBId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas",
+            "{{tareaBId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PATCH_A",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"prioridad\": \"baja\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tareas/{{tareaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas",
+            "{{tareaId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "JSON_mal",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titulo\":}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tareas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE_A",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Borrado con 204 y sin cuerpo\", function () {\r\n    pm.response.to.have.status(204);\r\n    pm.expect(pm.response.text()).to.equal(\"\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/{{tareaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas",
+            "{{tareaId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE_B",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Borrado con 204 y sin cuerpo\", function () {\r\n    pm.response.to.have.status(204);\r\n    pm.expect(pm.response.text()).to.equal(\"\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/{{tareaBId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tareas",
+            "{{tareaBId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "tareaId",
+      "value": ""
+    },
+    {
+      "key": "tareaBId",
+      "value": ""
+    }
+  ]
+}
