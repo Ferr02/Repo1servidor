@@ -7,6 +7,7 @@ public class Tarea {
     private String titulo;
     private String prioridad;
     private boolean completada;
+    private int proyectoId;
     
 
     @JsonCreator
@@ -26,6 +27,10 @@ public class Tarea {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setProyectoId(int proyectoId) {
+        this.proyectoId = proyectoId;
     }
 
     public String getTitulo() {
@@ -51,4 +56,10 @@ public class Tarea {
     public void setCompletada(boolean completada) {
         this.completada = completada;
     }
+
+    public int getProyectoId() {
+        return proyectoId;
+    }
+
+    
 }

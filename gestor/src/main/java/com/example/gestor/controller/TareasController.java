@@ -18,12 +18,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import com.example.gestor.memoria.MemoriaProyecto;
 
 @RestController
 @RequestMapping("/tareas")
 public class TareasController {
 
-    private final List<Tarea> tareas = new ArrayList<>();
+    private final List<Tarea> tareas;
+
+    public TareasController(MemoriaProyecto memoria) {
+        this.tareas = memoria.getTareas();
+    }
     private int siguienteId = 1;
 
     @GetMapping
