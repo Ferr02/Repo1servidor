@@ -60,6 +60,18 @@ public class Tarea {
     public int getProyectoId() {
         return proyectoId;
     }
+    
+    private String notaInterna = "pendiente de revisión interna";
+
+    public String getNotaInterna() {
+        return notaInterna;
+    }
+    
+    //private String notaInterna = "pendent de revisión interna";
+
+    //public String getNotaInterna() {
+        //return notaInterna;
+    //}
 
     
 }
