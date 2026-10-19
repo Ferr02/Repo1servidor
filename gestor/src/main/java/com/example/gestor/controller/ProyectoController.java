@@ -19,9 +19,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.gestor.dto.ProyectoResponse;
 import com.example.gestor.memoria.MemoriaProyecto;
 import com.example.gestor.model.Tarea;
-import java.util.List;
+import com.example.gestor.dto.ProyectoResponse;
+import com.example.gestor.dto.TareaResponse;
 
 
 
@@ -39,7 +42,7 @@ public class ProyectoController {
     }
 
     @GetMapping("/{id}/tareas")
-    public ResponseEntity<List<Tarea>> tareasDelProyecto(
+    public ResponseEntity<List<TareaResponse>> tareasDelProyecto(
             @PathVariable(name = "id") int id) {
 
         boolean existe = false;
@@ -55,49 +58,51 @@ public class ProyectoController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Tarea> resultado = new ArrayList<>();
+        List<TareaResponse> resultado = new ArrayList<>();
 
         for (Tarea tarea : tareas) {
             if (tarea.getProyectoId() == id) {
-                resultado.add(tarea);
+                resultado.add(TareaResponse.desde(tarea));
             }
         }
 
         return ResponseEntity.ok(resultado);
     }
 
+    
     @GetMapping
-    public List<Proyecto> lista(
+    public List<ProyectoResponse> lista(
             @RequestParam(name = "activo", required = false) Boolean activo) {
 
-        if (activo == null) {
-            return proyectos;
-        }
-
-        List<Proyecto> resultado = new ArrayList<>();
+        List<ProyectoResponse> resultado = new ArrayList<>();
 
         for (Proyecto proyecto : proyectos) {
-            if (proyecto.isActivo() == activo) {
-                resultado.add(proyecto);
+            if (activo == null || proyecto.isActivo() == activo) {
+                resultado.add(ProyectoResponse.desde(proyecto));
             }
         }
 
         return resultado;
     }
 
+
+
+   
     @GetMapping("/{id}")
-    public ResponseEntity<Proyecto> obtener(@PathVariable int id) {
+    public ResponseEntity<ProyectoResponse> obtener(@PathVariable int id) {
         for (Proyecto proyecto : proyectos) {
             if (proyecto.getId() == id) {
-                return ResponseEntity.ok(proyecto);
+                return ResponseEntity.ok(ProyectoResponse.desde(proyecto));
             }
         }
 
         return ResponseEntity.notFound().build();
     }
 
+
+
     @PostMapping
-    public ResponseEntity<Proyecto> crear(@RequestBody Proyecto proyecto) {
+    public ResponseEntity<ProyectoResponse> crear(@RequestBody Proyecto proyecto) {
 
         proyecto.setId(siguienteId);
         siguienteId++;
@@ -110,27 +115,30 @@ public class ProyectoController {
                 .buildAndExpand(proyecto.getId())
                 .toUri();
 
-        return ResponseEntity.created(ubicacion).body(proyecto);
+        return ResponseEntity.created(ubicacion)
+        .body(ProyectoResponse.desde(proyecto));
     }
 
+   
     @PutMapping("/{id}")
-    public ResponseEntity<Proyecto> actualizar(
-                @PathVariable int id,
-                @RequestBody Proyecto datos) {
+    public ResponseEntity<ProyectoResponse> actualizar(
+            @PathVariable int id,
+            @RequestBody Proyecto datos) {
 
-            for (int i = 0; i < proyectos.size(); i++) {
-                if (proyectos.get(i).getId() == id) {
-                    datos.setId(id);
-                    proyectos.set(i, datos);
-                    return ResponseEntity.ok(datos);
-                }
+        for (int i = 0; i < proyectos.size(); i++) {
+            if (proyectos.get(i).getId() == id) {
+                datos.setId(id);
+                proyectos.set(i, datos);
+                return ResponseEntity.ok(ProyectoResponse.desde(datos));
             }
+        }
 
         return ResponseEntity.notFound().build();
     }
 
-        @PatchMapping("/{id}")
-    public ResponseEntity<Proyecto> modificar(
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProyectoResponse> modificar(
             @PathVariable int id,
             @RequestBody Proyecto cambios) {
 
@@ -145,12 +153,14 @@ public class ProyectoController {
                     proyecto.setDescripcion(cambios.getDescripcion());
                 }
 
-                return ResponseEntity.ok(proyecto);
+                return ResponseEntity.ok(ProyectoResponse.desde(proyecto));
             }
         }
 
         return ResponseEntity.notFound().build();
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
