@@ -5,6 +5,7 @@ public class TareaPatchRequest {
     private String titulo;
     private String prioridad;
     private Boolean completada;
+    private Integer proyectoId;
 
     public TareaPatchRequest() {
     }
@@ -31,5 +32,13 @@ public class TareaPatchRequest {
 
     public void setCompletada(Boolean completada) {
         this.completada = completada;
+    }
+
+    public Integer getProyectoId() {
+    return proyectoId;
+    }
+
+    public void setProyectoId(Integer proyectoId) {
+        this.proyectoId = proyectoId;
     }
 }
