@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.example.gestor.dto.TareaPatchRequest;
+import com.example.gestor.dto.TareaRequest;
 import com.example.gestor.dto.TareaResponse;
 import com.example.gestor.memoria.MemoriaProyecto;
+
 
 @RestController
 @RequestMapping("/tareas")
@@ -80,11 +83,22 @@ public class TareasController {
         return ResponseEntity.notFound().build();
     }*/  
 
+    
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<TareaResponse> crear(@RequestBody Tarea tarea) {
+    public ResponseEntity<TareaResponse> crear(@RequestBody TareaRequest peticion) {
+
+        Tarea tarea = new Tarea();
 
         tarea.setId(siguienteId);
         siguienteId = siguienteId + 1;
+
+        tarea.setTitulo(peticion.getTitulo());
+        tarea.setPrioridad(peticion.getPrioridad());
+        tarea.setCompletada(false);
+
+        if (peticion.getProyectoId() != null) {
+            tarea.setProyectoId(peticion.getProyectoId());
+        }
 
         tareas.add(tarea);
 
@@ -96,6 +110,8 @@ public class TareasController {
 
         return ResponseEntity.created(ubicacion).body(TareaResponse.desde(tarea));
     }
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<TareaResponse> actualizar(
@@ -116,7 +132,7 @@ public class TareasController {
     @PatchMapping("/{id}")
     public ResponseEntity<TareaResponse> modificar(
             @PathVariable(name = "id") int id,
-            @RequestBody Tarea cambios) {
+            @RequestBody TareaPatchRequest cambios) {
 
         for (Tarea tarea : tareas) {
             if (tarea.getId() == id) {
@@ -129,14 +145,16 @@ public class TareasController {
                     tarea.setPrioridad(cambios.getPrioridad());
                 }
 
+                if (cambios.getCompletada() != null) {
+                    tarea.setCompletada(cambios.getCompletada());
+                }
+
                 return ResponseEntity.ok(TareaResponse.desde(tarea));
             }
         }
 
         return ResponseEntity.notFound().build();
     }
-
-
 
 
     @DeleteMapping("/{id}")
