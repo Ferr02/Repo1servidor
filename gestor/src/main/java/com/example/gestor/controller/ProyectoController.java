@@ -14,6 +14,7 @@ import com.example.gestor.mapper.TareaMapper;
 import com.example.gestor.memoria.MemoriaProyecto;
 
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -97,7 +98,7 @@ public class ProyectoController {
 
     @PostMapping
     public ResponseEntity<ProyectoResponse> crear(
-            @RequestBody ProyectoRequest peticion) {
+            @Valid @RequestBody ProyectoRequest peticion) {
 
         Proyecto proyecto = ProyectoMapper.aModelo(peticion);
 
@@ -119,7 +120,7 @@ public class ProyectoController {
     @PutMapping("/{id}")
     public ResponseEntity<ProyectoResponse> actualizar(
             @PathVariable int id,
-            @RequestBody ProyectoRequest datos) {
+            @Valid @RequestBody ProyectoRequest datos) {
 
         for (Proyecto proyecto : proyectos) {
             if (proyecto.getId() == id) {
@@ -138,7 +139,7 @@ public class ProyectoController {
     @PatchMapping("/{id}")
     public ResponseEntity<ProyectoResponse> modificar(
             @PathVariable int id,
-            @RequestBody ProyectoPatchRequest cambios) {
+            @Valid @RequestBody ProyectoPatchRequest cambios) {
 
         for (Proyecto proyecto : proyectos) {
             if (proyecto.getId() == id) {

@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.ArrayList;
 import com.example.gestor.dto.TareaPutRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/tareas")
@@ -62,7 +63,7 @@ public class TareasController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<TareaResponse> crear(
-            @RequestBody TareaRequest peticion) {
+            @Valid @RequestBody TareaRequest peticion) {
 
         Tarea tarea = TareaMapper.aModelo(peticion);
 
