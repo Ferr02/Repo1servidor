@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import com.example.gestor.validacion.PrioridadValida;
 
 public class TareaRequest {
 
@@ -14,7 +15,7 @@ public class TareaRequest {
 private String titulo;
 
 @NotBlank(message = "La prioridad es obligatoria")
-@Pattern(regexp = "baja|media|alta", message = "La prioridad debe ser baja, media o alta")
+@PrioridadValida 
 private String prioridad;
 
 @NotNull(message = "El proyectoId es obligatorio")
