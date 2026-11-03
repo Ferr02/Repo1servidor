@@ -8,7 +8,7 @@ import com.example.gestor.dto.ProyectoRequest;
 import com.example.gestor.dto.ProyectoPatchRequest;
 import com.example.gestor.dto.ProyectoResponse;
 import com.example.gestor.dto.TareaResponse;
-
+import com.example.gestor.error.ConflictoException;
 import com.example.gestor.mapper.ProyectoMapper;
 import com.example.gestor.mapper.TareaMapper;
 import com.example.gestor.memoria.MemoriaProyecto;
@@ -21,6 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.gestor.error.ConflictoException;
+import com.example.gestor.error.RecursoNoEncontradoException;
+
 
 @RestController
 @RequestMapping("/proyectos")
@@ -49,8 +52,8 @@ public class ProyectoController {
         }
 
         if (!existe) {
-            return ResponseEntity.notFound().build();
-        }
+        throw new RecursoNoEncontradoException("proyecto", id);
+    }
 
         List<Tarea> resultado = new ArrayList<>();
 
@@ -83,22 +86,31 @@ public class ProyectoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProyectoResponse> obtener(
-            @PathVariable int id) {
+    public ProyectoResponse obtener(@PathVariable int id) {
 
         for (Proyecto proyecto : proyectos) {
             if (proyecto.getId() == id) {
-                return ResponseEntity.ok(
-                        ProyectoMapper.aRespuesta(proyecto));
+                return ProyectoMapper.aRespuesta(proyecto);
             }
         }
 
-        return ResponseEntity.notFound().build();
+        throw new RecursoNoEncontradoException("proyecto", id);
     }
 
     @PostMapping
     public ResponseEntity<ProyectoResponse> crear(
             @Valid @RequestBody ProyectoRequest peticion) {
+
+            boolean existe = proyectos.stream()
+                    .anyMatch(p -> p.getNombre() != null
+                            && p.getNombre().trim()
+                                    .equalsIgnoreCase(peticion.getNombre().trim()));
+
+            if (existe) {
+                throw new ConflictoException(
+                        "Ya existe un proyecto con el nombre: "
+                                + peticion.getNombre());
+            }
 
         Proyecto proyecto = ProyectoMapper.aModelo(peticion);
 
@@ -133,7 +145,7 @@ public class ProyectoController {
             }
         }
 
-        return ResponseEntity.notFound().build();
+        throw new RecursoNoEncontradoException("proyecto", id);
     }
 
     @PatchMapping("/{id}")
@@ -151,7 +163,7 @@ public class ProyectoController {
             }
         }
 
-        return ResponseEntity.notFound().build();
+        throw new RecursoNoEncontradoException("proyecto", id);
     }
 
     @DeleteMapping("/{id}")

@@ -1,11 +1,14 @@
 package com.example.gestor.dto;
+import com.example.gestor.validacion.PrioridadValida;
 
 public class TareaPatchRequest {
 
     private String titulo;
+    @PrioridadValida
     private String prioridad;
     private Boolean completada;
     private Integer proyectoId;
+    
 
     public TareaPatchRequest() {
     }

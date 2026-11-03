@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.ArrayList;
 import com.example.gestor.dto.TareaPutRequest;
 import jakarta.validation.Valid;
+import com.example.gestor.error.RecursoNoEncontradoException;
+import com.example.gestor.error.RecursoNoEncontradoException;
 
 @RestController
 @RequestMapping("/tareas")
@@ -58,7 +60,7 @@ public class TareasController {
             }
         }
 
-        return ResponseEntity.notFound().build();
+        throw new RecursoNoEncontradoException("tarea", id);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -98,7 +100,7 @@ public class TareasController {
             }
         }
 
-        return ResponseEntity.notFound().build();
+        throw new RecursoNoEncontradoException("tarea", id);
     }
 
 
@@ -115,7 +117,7 @@ public class TareasController {
             }
         }
 
-        return ResponseEntity.notFound().build();
+        throw new RecursoNoEncontradoException("tarea", id);
     }
 
     @DeleteMapping("/{id}")
