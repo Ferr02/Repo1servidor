@@ -1,11 +1,27 @@
 
 package com.example.gestor.dto;
 
+import com.example.gestor.validacion.PrioridadValida;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class TareaPutRequest {
 
+    @NotBlank(message = "El título es obligatorio")
+    @Size(min = 3, max = 120, message = "El título debe tener entre 3 y 120 caracteres")
     private String titulo;
+
+    @NotBlank(message = "La prioridad es obligatoria")
+    @PrioridadValida
     private String prioridad;
-    private boolean completada;
+
+    @NotNull(message = "El campo completada es obligatorio")
+    private Boolean completada;
+
+    @NotNull(message = "El proyectoId es obligatorio")
+    @Positive(message = "El proyectoId debe ser positivo")
     private Integer proyectoId;
 
     public TareaPutRequest() {
@@ -27,11 +43,11 @@ public class TareaPutRequest {
         this.prioridad = prioridad;
     }
 
-    public boolean isCompletada() {
+    public Boolean getCompletada() {
         return completada;
     }
 
-    public void setCompletada(boolean completada) {
+    public void setCompletada(Boolean completada) {
         this.completada = completada;
     }
 
