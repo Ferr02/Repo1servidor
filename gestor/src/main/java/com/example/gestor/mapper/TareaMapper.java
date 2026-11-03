@@ -79,7 +79,7 @@ public class TareaMapper {
 
         tarea.setTitulo(peticion.getTitulo());
         tarea.setPrioridad(peticion.getPrioridad());
-        tarea.setCompletada(peticion.isCompletada());
+        tarea.setCompletada(peticion.getCompletada());
 
         if (peticion.getProyectoId() != null) {
             tarea.setProyectoId(peticion.getProyectoId());
@@ -88,4 +88,3 @@ public class TareaMapper {
 
 
 }
-

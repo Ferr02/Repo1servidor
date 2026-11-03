@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import com.example.gestor.dto.TareaPutRequest;
 import jakarta.validation.Valid;
 import com.example.gestor.error.RecursoNoEncontradoException;
-import com.example.gestor.error.RecursoNoEncontradoException;
 
 @RestController
 @RequestMapping("/tareas")
@@ -51,12 +50,11 @@ public class TareasController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TareaResponse> detalle(
-            @PathVariable(name = "id") int id) {
+    public TareaResponse detalle(@PathVariable(name = "id") int id) {
 
         for (Tarea tarea : tareas) {
             if (tarea.getId() == id) {
-                return ResponseEntity.ok(TareaMapper.aRespuesta(tarea));
+                return TareaMapper.aRespuesta(tarea);
             }
         }
 
@@ -88,7 +86,7 @@ public class TareasController {
     @PutMapping("/{id}")
     public ResponseEntity<TareaResponse> actualizar(
             @PathVariable(name = "id") int id,
-            @RequestBody TareaPutRequest datos) {
+            @Valid @RequestBody TareaPutRequest datos) {
 
         for (Tarea tarea : tareas) {
             if (tarea.getId() == id) {
@@ -107,7 +105,7 @@ public class TareasController {
     @PatchMapping("/{id}")
     public ResponseEntity<TareaResponse> modificar(
             @PathVariable(name = "id") int id,
-            @RequestBody TareaPatchRequest cambios) {
+            @Valid @RequestBody TareaPatchRequest cambios) {
 
         for (Tarea tarea : tareas) {
             if (tarea.getId() == id) {
@@ -129,4 +127,3 @@ public class TareasController {
         return ResponseEntity.noContent().build();
     }
 }
-
